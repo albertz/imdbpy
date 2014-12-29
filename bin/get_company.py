@@ -8,20 +8,20 @@ Show some info about the company with the given companyID (e.g. '0071509'
 for "Columbia Pictures [us]", using 'http' or 'mobile').
 Notice that companyID, using 'sql', are not the same IDs used on the web.
 """
-
+from __future__ import print_function, unicode_literals
 import sys
 
 # Import the IMDbPY package.
 try:
     import imdb
 except ImportError:
-    print 'You bad boy!  You need to install the IMDbPY package!'
+    print('You bad boy!  You need to install the IMDbPY package!')
     sys.exit(1)
 
 
 if len(sys.argv) != 2:
-    print 'Only one argument is required:'
-    print '  %s "companyID"' % sys.argv[0]
+    print('Only one argument is required:')
+    print('  {} "companyID"'.format(sys.argv[0]))
     sys.exit(2)
 
 companyID = sys.argv[1]
@@ -34,14 +34,14 @@ try:
     # Get a company object with the data about the company identified by
     # the given companyID.
     company = i.get_company(companyID)
-except imdb.IMDbError, e:
-    print "Probably you're not connected to Internet.  Complete error report:"
-    print e
+except imdb.IMDbError as e:
+    print("Probably you're not connected to Internet.  Complete error report:")
+    print(e)
     sys.exit(3)
 
 
 if not company:
-    print 'It seems that there\'s no company with companyID "%s"' % companyID
+    print('It seems that there\'s no company with companyID "{}"'.format(companyID))
     sys.exit(4)
 
 # XXX: this is the easier way to print the main info about a company;
@@ -51,6 +51,6 @@ if not company:
 # to access the data stored in a company object, so look below; the
 # commented lines show some ways to retrieve information from a
 # company object.
-print company.summary().encode(out_encoding, 'replace')
+print(company.summary().encode(out_encoding, 'replace'))
 
 

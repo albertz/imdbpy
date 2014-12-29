@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function, unicode_literals
 
 import distutils.sysconfig
 import os
@@ -197,9 +198,9 @@ def runRebuildmo():
         rebuildmo = imp.load_module('rebuildmo', *modInfo)
         os.chdir(modulePath)
         languages = rebuildmo.rebuildmo()
-        print 'Created locale for: %s.' % ' '.join(languages)
-    except Exception, e:
-        print 'ERROR: unable to rebuild .mo files; caught exception %s' % e
+        print('Created locale for: {}.'.format(' '.join(languages)))
+    except Exception as e:
+        print('ERROR: unable to rebuild .mo files; caught exception {}'.format(e))
     sys.path = path
     os.chdir(cwd)
     return languages
@@ -224,18 +225,24 @@ try:
     else:
         languages = []
     if languages:
-        data_files.append((os.path.join(distutils.sysconfig.get_python_lib(), 'imdb/locale'), ['imdb/locale/imdbpy.pot']))
+        data_files.append((
+            os.path.join(distutils.sysconfig.get_python_lib(), 'imdb/locale'),
+            ['imdb/locale/imdbpy.pot']
+        ))
     for lang in languages:
-        files_found = setuptools.findall('imdb/locale/%s' % lang)
+        files_found = setuptools.findall('imdb/locale/{}'.format(lang))
         if not files_found:
             continue
         base_dir = os.path.dirname(files_found[0])
-        data_files.append((os.path.join(distutils.sysconfig.get_python_lib(), 'imdb/locale'), ['imdb/locale/imdbpy-%s.po' % lang]))
+        data_files.append((
+            os.path.join(distutils.sysconfig.get_python_lib(), 'imdb/locale'),
+            ['imdb/locale/imdbpy-{}.po'.format(lang)]
+        ))
         if not base_dir:
             continue
         data_files.append((os.path.join(distutils.sysconfig.get_python_lib(), base_dir), files_found))
     setuptools.setup(**params)
 except SystemExit:
-    print ERR_MSG
+    print(ERR_MSG)
     raise
 
